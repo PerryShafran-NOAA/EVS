@@ -1,0 +1,24 @@
+set -x
+
+echo $VIIRSDIR
+mkdir -p $VIIRSDIR
+
+# check to see that observation data exists
+
+export viirsfound=0
+
+if [ -e $COMINobs/VIIRS_AOD/AOD/${VDATE}/VIIRS-L3-AOD_AQM_${VDATE}_${cyc}0000.nc ]
+then
+ export viirsfound=1
+fi
+
+if [ $viirsfound -eq 1 ]
+then
+run_metplus.py -c $PARMevs/metplus_config/${COMPONENT}/${VERIF_CASE}/stats/RegridDataPlane_fcstAQM_obsVIIRS.conf_save $PARMevs/metplus_config/machine.conf
+else
+echo "NO VIIRS OBS FOUND"
+fi
+
+exit $viirsfound
+
+
