@@ -59,15 +59,12 @@ export INITDATE=$VDATE
 
 echo $COMPATH
 
-#export COMIN=${COMIN:-$(compath.py ${envir}/com/${NET}/${evs_ver})}
+#export COMIN=${COMIN:-$(compath.py ${NET}/${evs_ver})}
 export COMIN=/lfs/h2/emc/vpppg/noscrub/perry.shafran/${NET}/${evs_ver}
 export COMINobs=$DCOMROOT
-#export COMINhysplit=${COMINhysplit:-$(compath.py ${envir}/com/${modsys}/${mod_ver})}
-export COMINhysplit=$COMIN/prep/${COMPONENT}
+export COMINhysplit=${COMINhysplit:-$(compath.py ${modsys}/${mod_ver})}
 #export COMOUT=${COMOUT:-$(compath.py ${NET}/${evs_ver}/${STEP}/${COMPONENT}/${RUN})}
-export COMOUT=$COMIN/${STEP}/${COMPONENT}
-export COMOUTsmall=$COMOUT/${RUN}.${VDATE}/$MODELNAME/$VERIF_CASE
-export COMOUTfinal=$COMOUT/${MODELNAME}.${VDATE}
+export COMOUT=$COMIN/${STEP}/${COMPONENT}/${RUN}
 
 #######################################################################
 # Execute the script.

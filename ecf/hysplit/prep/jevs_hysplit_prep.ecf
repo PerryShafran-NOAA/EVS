@@ -1,4 +1,4 @@
-#PBS -N jevs_hysplit_stats_00
+#PBS -N jevs_hysplit_prep_00
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q "dev"
@@ -36,10 +36,9 @@ module load metplus/${metplus_ver}
 module load prod_util/${produtil_ver}
 module load prod_envir/${prodenvir_ver}
 
-export cyc
-export envir=prod
+export cyc=16
 export NET=evs
-export STEP=stats
+export STEP=prep
 export COMPONENT=hysplit
 export RUN=dustcs
 export VERIF_CASE=grid2grid
@@ -47,9 +46,6 @@ export MODELNAME=hysplit
 export modsys=hysplit
 export mod_ver=${hysplit_ver}
 
-export config=$HOMEevs/parm/evs_config/hysplit/config.evs.hysplit.prod
-source $config
-
 # CALL executable job script here
-$HOMEevs/jobs/hysplit/stats/JEVS_HYSPLIT_STATS
+$HOMEevs/jobs/hysplit/prep/JEVS_HYSPLIT_PREP
 
