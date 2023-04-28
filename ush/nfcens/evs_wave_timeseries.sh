@@ -14,9 +14,8 @@
 periods='PAST31DAYS PAST90DAYS'
 
 cycles='00 12'
-fhrs='000 024 048 072 096 120 144 168
-      192 216 240 264 288 312 336 360 384'
-wave_vars='WIND HTSGW PERPW'
+fhrs='000 024 048 072 096 120 144 168 192 216 240'
+wave_vars='HTSGW'
 stats_list='stats1 stats2 stats3 stats4 stats5'
 ptype='time_series'
 
@@ -83,7 +82,7 @@ for period in ${periods} ; do
           
           chmod +x plot_${wvar}_${cyc}_${fhr}_${stats}_${ptype}_${period}.sh
           
-          echo "${DATA}/plot_${wvar}_${cyc}_${fhr}_${stats}_${ptype}_${period}.sh" >> plot_all_${MODELNAME}_${RUN}_g2o_plots.sh
+          echo "plot_${wvar}_${cyc}_${fhr}_${stats}_${ptype}_${period}.sh" >> plot_all_${MODELNAME}_${RUN}_g2o_plots.sh
           
         done  # fcst hrs
       done  # end of stats

@@ -14,8 +14,9 @@
 periods='PAST31DAYS PAST90DAYS'
 
 cycles='00 12'
-fhrs='000,024,048,072,096,120,144,168,192,216,240,264,288,312,336,360,384'
-wave_vars='WIND HTSGW PERPW'
+fhrs='000,024,048,072,096,120,144,168,192,216,240'
+# fhr is hardcoded below!
+wave_vars='HTSGW'
 stats_list='stats1 stats2 stats3 stats4 stats5'
 ptype='lead_average'
 
@@ -66,7 +67,7 @@ for period in ${periods} ; do
             echo "export METRIC=p95 "  >> plot_${wvar}_${cyc}_${stats}_${ptype}_${period}.sh
             ;;
         esac
-        echo "export FHR='000,024,048,072,096,120,144,168,192,216,240,264,288,312,336,360,384'" >> plot_${wvar}_${cyc}_${stats}_${ptype}_${period}.sh
+        echo "export FHR='000,024,048,072,096,120,144,168,192,216,240'" >> plot_${wvar}_${cyc}_${stats}_${ptype}_${period}.sh
         echo "export WVAR=${wvar}"      >> plot_${wvar}_${cyc}_${stats}_${ptype}_${period}.sh
         case ${wvar} in
           'WIND')
@@ -81,7 +82,7 @@ for period in ${periods} ; do
         
         chmod +x plot_${wvar}_${cyc}_${stats}_${ptype}_${period}.sh
         
-        echo "${DATA}/plot_${wvar}_${cyc}_${stats}_${ptype}_${period}.sh" >> plot_all_${MODELNAME}_${RUN}_g2o_plots.sh
+        echo "plot_${wvar}_${cyc}_${stats}_${ptype}_${period}.sh" >> plot_all_${MODELNAME}_${RUN}_g2o_plots.sh
         
       done  # end of stats
     done  # end of wave vars
