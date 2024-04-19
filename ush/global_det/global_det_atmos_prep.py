@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 '''
 Name: global_det_atmos_prep.py
 Contact(s): Mallory Row (mallory.row@noaa.gov)
