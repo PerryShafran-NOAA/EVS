@@ -27,43 +27,44 @@ DATA = os.environ['DATA']
 
 # If Using CFP, create POE scripts
 if USE_CFP == 'YES':
-    job_dir = os.path.join(DATA, VERIF_CASE, STEP, 'plotting_job_scripts')
+    job_dir = os.path.join(DATA, VERIF_CASE, 'plotting_job_scripts')
     job_files = glob.glob(os.path.join(job_dir, 'job*'))
     njob_files = len(job_files)
     if njob_files == 0:
         print(f"ERROR: No job files created in {job_dir}")
         sys.exit(1)
-    poe_job_files = glob.glob(os.path.join(job_dir, f'poe_job*'))
-    npoe_job_files = len(poe_job_files)
-    if npoe_job_files > 0:
-        for poe_job_file in poe_job_files:
+        # Remove any existing poe_job* files
+        for poe_job_file in glob.glob(os.path.join(job_dir, 'poe_job*')):
             os.remove(poe_job_file)
     njob, iproc, node = 1, 0, 1
     while njob <= njob_files:
         job_filename = f'job{njob}'
-        if machine in ['HERA', 'ORION', 'S4', 'JET']:
-            if iproc >= int(nproc):
-                iproc = 0
-                node+=1
+        job_path = os.path.join(job_dir, job_filename)
+
+        if not os.path.isfile(job_path):
+             njob += 1
+             continue
+
+        if iproc >= int(nproc):
+             iproc = 0
+             node += 1
         poe_job_file = os.path.join(job_dir, f'poe_jobs{node}')
-        poe_job = open(poe_job_file, 'a')
-        iproc+=1
-        if machine in ['HERA', 'ORION', 'S4', 'JET']:
+        with open(poe_job_file, 'a') as poe_job:
+          if machine in ['HERA', 'ORION', 'S4', 'JET']:
             poe_job.write(f'{iproc-1} {os.path.join(job_dir, job_filename)}\n')
-        else:
+          else:
             poe_job.write(f'{os.path.join(job_dir, job_filename)}\n')
-        poe_job.close()
-        njob+=1
+        iproc += 1
+        njob += 1
+    # Fill remaining processors with /bin/echo commands
     poe_job_file = os.path.join(job_dir, f'poe_jobs{node}')
-    poe_job = open(poe_job_file, 'a')
-    iproc+=1
-    while iproc <= int(nproc):
+    with open(poe_job_file, 'a') as poe_job:
+      while iproc <= int(nproc):
         if machine in ['HERA', 'ORION', 'S4', 'JET']:
             poe_job.write(f'{iproc-1} /bin/echo {iproc}\n')
         else:
             poe_job.write(f'/bin/echo {iproc}\n')
         iproc+=1
-    poe_job.close()
 else:
     print(f"ERROR: Cannot create POE scripts because USE_CFP is set to"
           + f" {USE_CFP}.  Please set USE_CFP=YES")

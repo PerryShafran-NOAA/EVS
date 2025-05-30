@@ -38,7 +38,7 @@ elif STEP == 'stats':
     )
 elif STEP == 'plots':
     jobdir = os.path.join(
-        DATA, VERIF_CASE, STEP, 'plotting_job_scripts'
+        DATA, VERIF_CASE, 'plotting_job_scripts'
     )
     outdir = os.path.join(
         DATA, VERIF_CASE, 'out'
@@ -82,9 +82,11 @@ else:
             if not os.path.exists(workdir):
                 os.makedirs(workdir)
             cutil.run_shell_command([
-                'find', '.', '-type', 'd', '-not', '-path',
-                '\"*workdirs*\"', '-not', '-path', '\"*job*\"', '-exec',
-                'mkdir', '-p', os.path.join(workdir,'{}'), '\\;'
+                'find', '.', '-type', 'd', '\\(', '-path', 
+                '\"*workdirs*\"', '-o', '\\(', '-path', '\"*job*\"', 
+                '!', '-path', '\"*completed_jobs*\"', '\\)', '\\)', 
+                '-prune', '-o' '-exec', 'mkdir', '-p', 
+                os.path.join(workdir,'{}'), '\\;'
             ]) 
         if STEP == "prep":
             print(
